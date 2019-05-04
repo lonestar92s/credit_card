@@ -13,7 +13,13 @@ class Account {
 		this.balance = 0;
 		this.availableCredit = this.creditLimit
 		this.purchases = [];
-		this.payments = [];		
+		this.payments = [];	
+		 this.purchaseDay = {
+		 	date: []
+		 }
+		 this.paymentDay = {
+		 	date: []
+		 }	
 		console.log(`Welcome, ${this.name}! Your credit limit is $${Number(this.creditLimit).toLocaleString()} dollars, with an APR of ${this.apr}%.`)
 
 	}
@@ -26,7 +32,9 @@ class Account {
 		
 		//This will keep track of individual customers items purchased
 		this.purchases.push('$'+ amount, item, merchant);
-		//refactor to clean up?
+		//for APR Calculation using the day
+		this.purchaseDay.date.push(dayOfMonthPurchased)
+
 		console.log(`You purchased ${item} from ${merchant} for $${amount} dollars.`)
 		console.log(`Your available credit is $${Number((this.availableCredit)).toLocaleString()}.`)
 		}
@@ -36,12 +44,14 @@ class Account {
 		if(amount > 0){
 		this.balance -= amount
 		this.availableCredit += amount
-		this.payments.push('$' + amount)
+		this.payments.push(`$${amount} paid on day ${dayOfMonthPaid} of the month.`)
+		//for APR calculation using day
+		this.paymentDay.date.push(dayOfMonthPaid)
 		console.log(`Hi ${this.name}, you have made a payment of $${amount} dollars. Your available credit is now $${Number((this.availableCredit)).toLocaleString()}.`)
 		 }
 		 else(console.error("Payment must be more than 0 dollars"))
 	}
-	checkBalance(){
+	checkBalanceByDay(day){
 		console.log(`Your account balance is $${this.balance}.`)
 	}
 	checkPurchases(){
@@ -49,7 +59,7 @@ class Account {
 	}
 	aprCalculator(days){
 		if(days < 30){
-			this.checkBalance()
+			console.log(this.balance)
 		}
 		else{
 		//logic for APR
@@ -71,11 +81,10 @@ class Account {
 //Open new account with name, APR% and credit limit
 let andrewAccount = new Account('Andrew', 35, 10000)
 
-// andrewAccount.purchase(500, 'Samsung TV','Best Buy', 1)
-// andrewAccount.makePayment(200, 15)
-// andrewAccount.makePayment(0,15)
-// andrewAccount.aprCalculator(31)
-
+andrewAccount.purchase(500, 'Samsung TV','Best Buy', 1)
+andrewAccount.makePayment(200, 15)
+andrewAccount.makePayment(100,16)
+console.log(andrewAccount.paymentDay.date[1])
 
 
 
