@@ -13,6 +13,8 @@ class Account {
         this.purchases = [];
         this.payments = [];
 
+
+
         console.log(`Welcome, ${this.name}! Your credit limit is $${Number(this.creditLimit).toLocaleString()} dollars, with an APR of ${this.apr}%.`)
 
     }
@@ -33,7 +35,7 @@ class Account {
         if (amount > 0) {
             this.balance -= amount
             this.availableCredit += amount
-            this.payments.push(`$${amount} paid on day ${dayOfMonthPaid} of the month.`)
+            this.payments.push({amount, dayOfMonthPaid})
             console.log(`Hi ${this.name}, you have made a payment of $${amount} dollars. Your available credit is now $${Number((this.availableCredit)).toLocaleString()}.`)
         } else(console.error("Payment must be more than 0 dollars"))
     }
@@ -43,6 +45,9 @@ class Account {
     }
     checkPurchases() {
         console.log(this.purchases)
+    }
+    checkPayments(){
+    	console.log(this.payments)
     }
     aprCalculator(days) {
         //logic for APR
@@ -54,30 +59,50 @@ class Account {
 
     }
     checkBalanceByDay(day) {
-            // // let sum = this.purchases.amou;
-            // let add = (a, b) => a + b
-            // let dailyBalance = sum.reduce(add)
-            // console.log(`Your balance was $${dailyBalance} on day ${day} of the month.`)
-  
+    	let sum = []
+    	let payment = []
+    	for(let i = 0; i < this.purchases.length; i++){
+    		if(this.purchases[i].dayOfMonthPurchased === day){
+    			let amounts = this.purchases[i].amount
+    			sum.push(amounts)
+
+    		}
+    		
+    	}
+    	    	let add = (a, b) => a + b
+    			let dailyBalance = sum.reduce(add)
+    			console.log(`Your balance was $${dailyBalance} on day ${day} of the month.`)
+    			
+    			
     }
 }
+         
+
+    			
+    			
+  
 
 
 
 //Open new account with name, APR% and credit limit
 let andrewAccount = new Account('Andrew', 35, 10000)
 
-andrewAccount.purchase(200, 'hat', 'nordstrom', 1)
+andrewAccount.purchase(300, 'hat', 'nordstrom', 1)
 andrewAccount.purchase(200, 'hat', 'nordstrom', 2)
+andrewAccount.purchase(500, 'shoes', 'nike', 2)
+andrewAccount.purchase(200, 'shoes', 'nike', 2)
+andrewAccount.makePayment(300, 2)
+andrewAccount.checkPayments()
+andrewAccount.checkBalanceByDay(2)
 
-console.log(andrewAccount.purchases[1].dayOfMonthPurchased)
 
 
 
 
 
 
-andrewAccount.checkBalanceByDay(1)
+
+
 
 
 
