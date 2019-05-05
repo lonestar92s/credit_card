@@ -6,8 +6,6 @@ class Account {
         this.name = name;
         this.apr = apr
         this.creditLimit = limit
-        //Account age by days
-        this.accountAge = 0;
         this.balance = 0;
         this.availableCredit = this.creditLimit
         this.purchases = [];
@@ -25,7 +23,7 @@ class Account {
             this.availableCredit -= amount;
 
             // This will keep track of individual customers items purchased
-            this.purchases.push({amount, item, merchant, dayOfMonthPurchased});
+            this.purchases.push({ amount, item, merchant, dayOfMonthPurchased });
 
             console.log(`You purchased ${item} from ${merchant} for $${amount} dollars.`)
             console.log(`Your available credit is $${Number((this.availableCredit)).toLocaleString()}.`)
@@ -35,7 +33,7 @@ class Account {
         if (amount > 0) {
             this.balance -= amount
             this.availableCredit += amount
-            this.payments.push({amount, dayOfMonthPaid})
+            this.payments.push({ amount, dayOfMonthPaid })
             console.log(`Hi ${this.name}, you have made a payment of $${amount} dollars. Your available credit is now $${Number((this.availableCredit)).toLocaleString()}.`)
         } else(console.error("Payment must be more than 0 dollars"))
     }
@@ -46,8 +44,8 @@ class Account {
     checkPurchases() {
         console.log(this.purchases)
     }
-    checkPayments(){
-    	console.log(this.payments)
+    checkPayments() {
+        console.log(this.payments)
     }
     aprCalculator(days) {
         //logic for APR
@@ -59,54 +57,22 @@ class Account {
 
     }
     checkBalanceByDay(day) {
-    	let sum = []
-    	let payment = []
-    	for(let i = 0; i < this.purchases.length; i++){
-    		if(this.purchases[i].dayOfMonthPurchased === day){
-    			let amounts = this.purchases[i].amount
-    			sum.push(amounts)
+        //Loop through all of the purchases. If the date of the purchases matches the day paramater, return the purchase amount.
+        let sum = []
+        let payment = []
+        for (let i = 0; i < this.purchases.length; i++) {
+            if (this.purchases[i].dayOfMonthPurchased === day) {
+                let amounts = this.purchases[i].amount
+                sum.push(amounts)
 
-    		}
-    		
-    	}
-    	    	let add = (a, b) => a + b
-    			let dailyBalance = sum.reduce(add)
-    			console.log(`Your balance was $${dailyBalance} on day ${day} of the month.`)
-    			
-    			
+            }
+
+        }
+        let add = (a, b) => a + b
+        let dailyBalance = sum.reduce(add)
+        console.log(`Your balance was $${dailyBalance} on day ${day} of the month.`)
     }
 }
-         
-
-    			
-    			
-  
-
 
 
 //Open new account with name, APR% and credit limit
-let andrewAccount = new Account('Andrew', 35, 10000)
-
-andrewAccount.purchase(300, 'hat', 'nordstrom', 1)
-andrewAccount.purchase(200, 'hat', 'nordstrom', 2)
-andrewAccount.purchase(500, 'shoes', 'nike', 2)
-andrewAccount.purchase(200, 'shoes', 'nike', 2)
-andrewAccount.makePayment(300, 2)
-andrewAccount.checkPayments()
-andrewAccount.checkBalanceByDay(2)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
