@@ -11,11 +11,6 @@ class Account {
         this.balance = 0;
         this.availableCredit = this.creditLimit
         this.purchases = [];
-        //this array will store purchase balance by day
-        this.balanceByDay = {
-        		amount: [],
-        		date: []
-        }
         this.payments = [];
 
         console.log(`Welcome, ${this.name}! Your credit limit is $${Number(this.creditLimit).toLocaleString()} dollars, with an APR of ${this.apr}%.`)
@@ -27,12 +22,8 @@ class Account {
             this.balance += amount;
             this.availableCredit -= amount;
 
-
-            //This will keep track of individual customers items purchased
-            this.purchases.push('$' + amount, item, merchant, dayOfMonthPurchased);
-            this.balanceByDay.amount.push(amount)
-            this.balanceByDay.date.push(dayOfMonthPurchased)
-
+            // This will keep track of individual customers items purchased
+            this.purchases.push({amount, item, merchant, dayOfMonthPurchased});
 
             console.log(`You purchased ${item} from ${merchant} for $${amount} dollars.`)
             console.log(`Your available credit is $${Number((this.availableCredit)).toLocaleString()}.`)
@@ -43,10 +34,10 @@ class Account {
             this.balance -= amount
             this.availableCredit += amount
             this.payments.push(`$${amount} paid on day ${dayOfMonthPaid} of the month.`)
-
             console.log(`Hi ${this.name}, you have made a payment of $${amount} dollars. Your available credit is now $${Number((this.availableCredit)).toLocaleString()}.`)
         } else(console.error("Payment must be more than 0 dollars"))
     }
+
     checkBalance() {
         console.log(`Your account balance is $${this.balance}.`)
     }
@@ -54,41 +45,43 @@ class Account {
         console.log(this.purchases)
     }
     aprCalculator(days) {
-            //logic for APR
-            let interest = this.balance * (this.apr / 100) / (365) * days
-            let accrued = Math.round(interest * 100) / 100
-            let newBalance = accrued + this.balance
-            this.balance += accrued
-            console.log(`Your new account balance after ${days} days of interest is $${newBalance}`)
+        //logic for APR
+        let interest = this.balance * (this.apr / 100) / (365) * days
+        let accrued = Math.round(interest * 100) / 100
+        let newBalance = accrued + this.balance
+        this.balance += accrued
+        console.log(`Your new account balance after ${days} days of interest is $${newBalance}`)
 
     }
-    checkBalanceByDay(day){
-    	if(this.balanceByDay.date[0] == day){
-    		let sum = this.balanceByDay.amount;
-    		let add = (a,b) => a + b
-    		let dailyBalance = sum.reduce(add)
-    		console.log(dailyBalance)
-    		
-    	}
+    checkBalanceByDay(day) {
+            // // let sum = this.purchases.amou;
+            // let add = (a, b) => a + b
+            // let dailyBalance = sum.reduce(add)
+            // console.log(`Your balance was $${dailyBalance} on day ${day} of the month.`)
+  
     }
 }
-        
+
 
 
 //Open new account with name, APR% and credit limit
 let andrewAccount = new Account('Andrew', 35, 10000)
 
-andrewAccount.purchase(8000, 'Samsung TV', 'Best Buy', 1)
-andrewAccount.purchase(50, 'shoes', 'nike', 1)
-andrewAccount.purchase(100, 'shirt', 'urban outfitters', 1)
-andrewAccount.makePayment(200, 15)
-andrewAccount.makePayment(100, 16)
-andrewAccount.checkBalance()
-andrewAccount.aprCalculator(4)
+andrewAccount.purchase(200, 'hat', 'nordstrom', 1)
+andrewAccount.purchase(200, 'hat', 'nordstrom', 2)
+
+console.log(andrewAccount.purchases[1].dayOfMonthPurchased)
+
+
+
+
+
+
 andrewAccount.checkBalanceByDay(1)
 
 
 
 
 
-//let christy = new Account ('Christy', 20, 5000)
+
+
